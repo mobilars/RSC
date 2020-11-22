@@ -112,7 +112,7 @@ void setup() {
   pinMode(2, OUTPUT);
   digitalWrite(2, HIGH);
   attachInterrupt(digitalPinToInterrupt(26),poop,RISING);
-  attachInterrupt(digitalPinToInterrupt(26),stepSound,RISING);
+  attachInterrupt(digitalPinToInterrupt(25),stepSound,RISING);
   InitBLE();
 
 }
