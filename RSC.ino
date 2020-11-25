@@ -17,7 +17,11 @@ uint8_t     inst_cadence = 0;                                               /**<
 uint16_t    inst_stride_length = 50;                                        /**< Instantaneous Stride Length. */
 uint32_t    total_distance = 0;
 float       total_distance_float = 0;
+
 unsigned long msec_between_steps = 0;
+volatile static unsigned long last_interrupt_time = 0;
+volatile static unsigned long last_step_time = 0;
+volatile static unsigned long stepCount = 0;
 
 int encoder = 2;
 volatile unsigned int counter;
@@ -79,8 +83,6 @@ void poop() {
 
 void stepSound()
 {
- static unsigned long last_interrupt_time = 0;
- static unsigned long last_step_time = 0;
  unsigned long interrupt_time = millis();
  // If interrupts come faster than 200ms, assume it's a bounce and ignore
  if (interrupt_time - last_interrupt_time > 200)
@@ -88,8 +90,6 @@ void stepSound()
   digitalWrite(2, LOW);
 
   msec_between_steps = (interrupt_time - last_step_time);
-  Serial.print(msec_between_steps);
-  Serial.println();
 
   if (msec_between_steps > 2000) {
     inst_cadence = 0; 
@@ -108,6 +108,7 @@ void setup() {
   Serial.begin(115200);
   //Serial.println("Start");
   Serial.print("started");
+  pinMode(25, INPUT);
   pinMode(26, INPUT);
   pinMode(2, OUTPUT);
   digitalWrite(2, HIGH);
